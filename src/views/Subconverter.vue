@@ -4,7 +4,7 @@
       <el-col>
         <el-card>
           <div slot="header">
-            Subscription Converter
+            月下订阅链接转换器
             <svg-icon icon-class="github" style="margin-left: 20px" @click="goToProject" />
 
             <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
@@ -27,10 +27,14 @@
 
               <div v-if="advanced === '2'">
                 <el-form-item label="后端地址:">
-                  <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"
-                    placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub?">
-                    <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">前往项目仓库</el-button>
-                  </el-autocomplete>
+                  <el-select v-model="form.customBackend" style="width: 100%">
+                    <el-option v-for="(v, k) in options.backendOptions" :key="k" :label="v.name"
+                               :value="v.value"></el-option>
+                  </el-select>
+<!--                  <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"-->
+<!--                    placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub?">-->
+<!--                    <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">前往项目仓库</el-button>-->
+<!--                  </el-autocomplete>-->
                 </el-form-item>
                 <el-form-item label="远程配置:">
                   <el-select v-model="form.remoteConfig" allow-create filterable placeholder="请选择" style="width: 100%">
@@ -195,112 +199,44 @@ export default {
 
       options: {
         clientTypes: {
-          Clash: "clash",
-          Surge3: "surge&ver=3",
-          Surge4: "surge&ver=4",
-          Quantumult: "quan",
-          QuantumultX: "quanx",
-          Surfboard: "surfboard",
-          Loon: "loon",
-          SSAndroid: "sssub",
-          V2Ray: "v2ray",
-          ss: "ss",
-          ssr: "ssr",
-          ssd: "ssd",
           ClashR: "clashr",
-          Surge2: "surge&ver=2",
+          Surge4: "surge&ver=4",
+          Loon: "loon",
+          QuantumultX: "quanx",
         },
-        backendOptions: [{ value: "http://127.0.0.1:25500/sub?" }],
+        backendOptions: [
+          {name: "月下后端", value: "https://sub.darrennee.com/sub?"},
+        ],
         remoteConfig: [
           {
-            label: "universal",
+            label: "自用规则",
             options: [
               {
-                label: "No-Urltest",
+                label: "月下自用分流规则",
                 value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/no-urltest.ini"
-              },
-              {
-                label: "Urltest",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/universal/urltest.ini"
+                    "https://raw.githubusercontent.com/DarrenNi/YxClashRule/main/GeneralClashRule.ini"
               }
             ]
           },
-          {
-            label: "customized",
-            options: [
-              {
-                label: "Maying",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/maying.ini"
-              },
-              {
-                label: "Ytoo",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ytoo.ini"
-              },
-              {
-                label: "FlowerCloud",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/flowercloud.ini"
-              },
-              {
-                label: "Nexitally",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/nexitally.ini"
-              },
-              {
-                label: "SoCloud",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/socloud.ini"
-              },
-              {
-                label: "ARK",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ark.ini"
-              },
-              {
-                label: "ssrCloud",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/customized/ssrcloud.ini"
-              }
-            ]
-          },
-          {
-            label: "Special",
-            options: [
-              {
-                label: "NeteaseUnblock(仅规则，No-Urltest)",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/special/netease.ini"
-              },
-              {
-                label: "Basic(仅GEOIP CN + Final)",
-                value:
-                  "https://cdn.jsdelivr.net/gh/SleepyHeeead/subconverter-config@master/remote-config/special/basic.ini"
-              }
-            ]
-          }
         ]
       },
       form: {
         sourceSubUrl: "",
-        clientType: "",
-        customBackend: "",
-        remoteConfig: "",
+        clientType: "surge&ver=4",
+        customBackend: "https://sub.darrennee.com/sub?",
+        remoteConfig: "https://raw.githubusercontent.com/DarrenNi/YxClashRule/main/GeneralClashRule.ini",
         excludeRemarks: "",
         includeRemarks: "",
-        filename: "",
+        filename: "yxsub",
         emoji: true,
         nodeList: false,
         extraset: false,
-        sort: false,
-        udp: false,
-        tfo: false,
+        sort: true,
+        udp: true,
+        tfo: true,
         scv: true,
         fdn: false,
-        appendType: false,
+        appendType: true,
         insert: false, // 是否插入默认订阅的节点，对应配置项 insert_url
         new_name: true, // 是否使用 Clash 新字段
 
@@ -331,7 +267,7 @@ export default {
     };
   },
   created() {
-    document.title = "Subscription Converter";
+    document.title = "月下订阅转换";
     this.isPC = this.$getOS().isPc;
 
     // 获取 url cache
@@ -341,12 +277,11 @@ export default {
   },
   mounted() {
     this.form.clientType = "clash";
-    this.notify();
     this.getBackendVersion();
   },
   methods: {
     onCopy() {
-      this.$message.success("Copied!");
+      this.$message.success("已复制到粘贴板!");
     },
     goToProject() {
       window.open(project);
